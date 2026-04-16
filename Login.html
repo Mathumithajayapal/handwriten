@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Login | InkWhisper – Botanical Alchemy</title>
+  
+  <!-- Tailwind + Font Awesome + Google Fonts (same as About page) -->
+  <script src="tailwind.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="icon" type="image/jpeg" href="Images\favicon.jpg">
+
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            'sans': ['Inter', 'system-ui', 'sans-serif'],
+            'script': ['Great Vibes', 'cursive'],
+            'serif': ['Playfair Display', 'serif']
+          },
+          colors: {
+            primary: "#4A2E1F",
+            accent: "#BF7F3A",
+            soft: "#FEF8F0",
+            light: "#FFE8D4"
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    /* Same enhanced dark mode as about page — forces all text to white */
+    html.dark body {
+      background-color: #1a1410 !important;
+    }
+    html.dark .login-card {
+      background-color: #2a221c !important;
+      border-color: #3d3228 !important;
+    }
+    html.dark .input-field {
+      background-color: #1a1410 !important;
+      border-color: #5a4a38 !important;
+      color: #FEF8F0 !important;
+    }
+    html.dark .input-field:focus {
+      border-color: #FFCF9A !important;
+      outline: none;
+    }
+    html.dark .input-field::placeholder {
+      color: #b8a88c !important;
+    }
+    html.dark .divider-line {
+      background-color: #5a4a38 !important;
+    }
+    html.dark .social-btn {
+      border-color: #5a4a38 !important;
+      background-color: #2a221c !important;
+      color: #FEF8F0 !important;
+    }
+    html.dark .social-btn:hover {
+      background-color: #3d3228 !important;
+      border-color: #FFCF9A !important;
+    }
+    html.dark .text-primary-dark,
+    html.dark label,
+    html.dark .remember-text,
+    html.dark .or-text,
+    html.dark .signup-text {
+      color: #FEF8F0 !important;
+    }
+    html.dark .accent-link {
+      color: #FFCF9A !important;
+    }
+    html.dark .accent-link:hover {
+      color: #FFD89C !important;
+    }
+    html.dark .checkbox-label {
+      color: #e8dccc !important;
+    }
+    html.dark .footer-divider {
+      background-color: #5a4a38 !important;
+    }
+    html.dark .top-btn {
+      background-color: #2a221c !important;
+      color: #FEF8F0 !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    html.dark .top-btn:hover {
+      background-color: #3d3228 !important;
+    }
+    
+    /* RTL Support */
+    html[dir="rtl"] .rtl-flip {
+      transform: scaleX(-1);
+    }
+    html[dir="rtl"] .flex-row-reverse-rtl {
+      flex-direction: row-reverse;
+    }
+    html[dir="rtl"] .social-btn i {
+      margin-left: 0.5rem;
+      margin-right: 0;
+    }
+    html[dir="rtl"] .remember-checkbox {
+      margin-left: 0.5rem;
+      margin-right: 0;
+    }
+    
+    /* Smooth transitions */
+    * {
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    
+    /* Mobile responsive adjustments */
+    @media (max-width: 640px) {
+      .login-card {
+        padding: 1.75rem !important;
+      }
+      .logo-title {
+        font-size: 2.25rem !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 1.5rem !important;
+      }
+      .logo-title {
+        font-size: 2rem !important;
+      }
+      .social-btn span {
+        display: inline !important;
+      }
+      .social-btn {
+        padding: 0.6rem 0.5rem !important;
+      }
+    }
+    
+    /* Focus ring brand color */
+    .input-field:focus {
+      
+      border-color: #BF7F3A;
+    }
+    
+    /* Custom checkbox accent */
+    input[type="checkbox"] {
+      accent-color: #BF7F3A;
+    }
+  </style>
+</head>
+<body class="bg-[#FEF8F0] font-sans antialiased min-h-screen flex items-center justify-center px-4 py-6 md:py-10">
+
+  <!-- 🔘 TOP RIGHT CONTROLS - Same style as About page navbar buttons -->
+  <div class="fixed top-4 right-4 flex items-center gap-3 z-50">
+    <!-- Dark Mode Toggle (matching about page design) -->
+    <button id="darkModeToggle" 
+      class="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium bg-[#FFE8D4] dark:bg-[#2a221c] text-[#4A2E1F] dark:text-[#FEF8F0] shadow-md hover:bg-[#FFDDB5] dark:hover:bg-[#3d3228] transition">
+      <i id="darkIcon" class="fas fa-moon text-sm"></i>
+      <span id="darkLabel">Dark</span>
+    </button>
+
+    <!-- RTL Toggle -->
+    <button id="rtlToggleBtn" 
+      class="flex items-center gap-1.5 px-3 py-2 rounded-full text-sm font-medium bg-[#FFE8D4] dark:bg-[#2a221c] text-[#4A2E1F] dark:text-[#FEF8F0] shadow-md hover:bg-[#FFDDB5] dark:hover:bg-[#3d3228] transition">
+      <i id="rtlIcon" class="fas fa-globe text-sm"></i>
+      <span id="rtlLabel">LTR</span>
+    </button>
+  </div>
+
+  <!-- Main Container - Fully Responsive -->
+  <div class="w-full max-w-md mx-auto">
+    
+    <!-- Login Card - matches about page card styling (card-dark class equivalent) -->
+    <div class="login-card w-full bg-white rounded-2xl shadow-xl border border-[#FFE0B5] dark:border-[#3d3228] p-6 sm:p-7 md:p-8 transition-all">
+      
+      <!-- Logo Area - Exactly matching about page logo style (InkWhisper + botanical essence) -->
+      <div class="text-center mb-6 md:mb-8">
+        <a href="index.html" class="inline-flex items-center justify-center gap-2 group mb-1">
+          <i class="fas fa-feather-alt text-[#BF7F3A] text-2xl md:text-3xl transition-transform group-hover:rotate-3"></i>
+          <div class="flex flex-col leading-tight text-left">
+            <h1 class="text-[#4A2E1F] dark:text-[#FEF8F0] text-3xl md:text-4xl font-bold tracking-tight" 
+                style="font-family: 'Inter', system-ui, sans-serif;">
+              InkWhisper
+            </h1>
+            <span class="text-[#8B694A] dark:text-[#C9BDA8] text-[0.65rem] font-semibold uppercase tracking-wider -mt-0.5">
+              botanical essence
+            </span>
+          </div>
+        </a>
+        <div class="mt-2">
+          <p class="text-[#6F523B] dark:text-[#E8DCCC] text-sm md:text-base font-medium" style="font-family: 'Playfair Display', serif;">
+            Welcome back to your ritual
+          </p>
+          <div class="w-12 h-0.5 bg-[#D9B574] dark:bg-[#FFCF9A] mx-auto mt-2 rounded-full"></div>
+        </div>
+      </div>
+
+      <!-- Login Form -->
+      <form class="space-y-5" id="loginForm">
+        <!-- Email Field -->
+        <div>
+          <label class="block text-sm font-semibold text-[#4A2E1F] dark:text-[#FEF8F0] mb-1.5 tracking-wide">
+            <i class="fas fa-envelope text-[#BF7F3A] text-xs mr-1"></i> Email
+          </label>
+          <input type="email" 
+            class="input-field w-full px-4 py-2.5 rounded-xl border border-[#FFE0B5] dark:border-[#5a4a38] bg-[#FEF8F0] dark:bg-[#1a1410] text-[#3E2C1C] dark:text-[#FEF8F0] focus:outline-none focus:ring-2 focus:ring-[#BF7F3A]/50 focus:border-[#BF7F3A] text-sm md:text-base transition"
+            placeholder="hello@inkwhisper.com">
+        </div>
+
+        <!-- Password Field -->
+        <div>
+          <label class="block text-sm font-semibold text-[#4A2E1F] dark:text-[#FEF8F0] mb-1.5 tracking-wide">
+            <i class="fas fa-lock text-[#BF7F3A] text-xs mr-1"></i> Password
+          </label>
+          <input type="password" 
+            class="input-field w-full px-4 py-2.5 rounded-xl border border-[#FFE0B5] dark:border-[#5a4a38] bg-[#FEF8F0] dark:bg-[#1a1410] text-[#3E2C1C] dark:text-[#FEF8F0] focus:outline-none focus:ring-2 focus:ring-[#BF7F3A]/50 focus:border-[#BF7F3A] text-sm md:text-base transition"
+            placeholder="••••••••">
+        </div>
+
+        <!-- Remember & Forgot Row - Responsive wrap -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm">
+          <label class="flex items-center gap-2 text-[#6F523B] dark:text-[#E8DCCC] cursor-pointer checkbox-label">
+            <input type="checkbox" class="w-4 h-4 rounded border-[#FFE0B5] text-[#BF7F3A] focus:ring-[#BF7F3A] focus:ring-offset-0">
+            <span class="remember-text">Remember me</span>
+          </label>
+          <a href="#" class="text-[#BF7F3A] dark:text-[#FFCF9A] hover:text-[#9B5E2A] dark:hover:text-[#FFD89C] hover:underline font-medium text-sm transition accent-link">
+            Forgot password?
+          </a>
+        </div>
+
+        <!-- Login Button - same primary button style as about page CTA -->
+        <button type="submit" 
+          class="w-full bg-[#4A2E1F] hover:bg-[#6B422A] dark:bg-[#5a3a28] dark:hover:bg-[#7a4f38] text-white font-semibold py-3 rounded-full transition shadow-md text-sm md:text-base flex items-center justify-center gap-2 group">
+          <span>Login</span>
+          <i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition-transform rtl-flip"></i>
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="flex items-center gap-3 my-6 md:my-7">
+        <div class="flex-1 h-px bg-[#FFE0B5] dark:bg-[#5a4a38] divider-line"></div>
+        <span class="text-xs text-[#8B694A] dark:text-[#C9BDA8] font-medium or-text">OR CONTINUE WITH</span>
+        <div class="flex-1 h-px bg-[#FFE0B5] dark:bg-[#5a4a38] divider-line"></div>
+      </div>
+
+      <!-- Social Login Buttons - fully responsive grid, hides text on mobile but keeps icons + brand -->
+      <div class="grid grid-cols-3 gap-2 sm:gap-3">
+        <!-- Google -->
+        <button class="social-btn flex items-center justify-center gap-2 border border-[#FFE0B5] dark:border-[#5a4a38] py-2.5 rounded-full text-sm font-medium bg-white dark:bg-[#2a221c] text-[#4A2E1F] dark:text-[#FEF8F0] hover:bg-[#FFF6EA] dark:hover:bg-[#3d3228] transition shadow-sm">
+          <i class="fab fa-google text-[#DB4437] text-base"></i>
+          <span class="hidden xs:inline sm:inline text-xs md:text-sm">Google</span>
+        </button>
+        <!-- Facebook -->
+        <button class="social-btn flex items-center justify-center gap-2 border border-[#FFE0B5] dark:border-[#5a4a38] py-2.5 rounded-full text-sm font-medium bg-white dark:bg-[#2a221c] text-[#4A2E1F] dark:text-[#FEF8F0] hover:bg-[#FFF6EA] dark:hover:bg-[#3d3228] transition shadow-sm">
+          <i class="fab fa-facebook-f text-[#1877F2] text-base"></i>
+          <span class="hidden xs:inline sm:inline text-xs md:text-sm">Facebook</span>
+        </button>
+        <!-- Apple -->
+        <button class="social-btn flex items-center justify-center gap-2 border border-[#FFE0B5] dark:border-[#5a4a38] py-2.5 rounded-full text-sm font-medium bg-white dark:bg-[#2a221c] text-[#4A2E1F] dark:text-[#FEF8F0] hover:bg-[#FFF6EA] dark:hover:bg-[#3d3228] transition shadow-sm">
+          <i class="fab fa-apple text-black dark:text-white text-base"></i>
+          <span class="hidden xs:inline sm:inline text-xs md:text-sm">Apple</span>
+        </button>
+      </div>
+
+      <!-- Sign Up Link -->
+      <p class="text-center text-sm text-[#6F523B] dark:text-[#E8DCCC] mt-6 md:mt-7 signup-text">
+        Don't have an account?
+        <a href="signup.html" class="text-[#BF7F3A] dark:text-[#FFCF9A] font-semibold hover:underline ml-1 transition accent-link">
+          Sign up <i class="fas fa-chevron-right text-xs rtl-flip"></i>
+        </a>
+      </p>
+    </div>
+    
+    <!-- Extra small note - brand ethos line (like footer style) -->
+    <div class="text-center mt-6 text-xs text-[#8B694A] dark:text-[#C9BDA8]">
+      <i class="fas fa-seedling text-[#BF7F3A] text-xs mr-1"></i> Rooted in slow alchemy • Handcrafted rituals
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const html = document.documentElement;
+      
+      // ========== DARK MODE (exact same logic as about page) ==========
+      const darkToggle = document.getElementById('darkModeToggle');
+      const darkIcon = document.getElementById('darkIcon');
+      const darkLabel = document.getElementById('darkLabel');
+      
+      function updateDarkUI(isDark) {
+        const iconClass = isDark ? 'fas fa-sun text-sm' : 'fas fa-moon text-sm';
+        const label = isDark ? 'Light' : 'Dark';
+        if (darkIcon) darkIcon.className = iconClass;
+        if (darkLabel) darkLabel.innerText = label;
+      }
+      
+      // Check localStorage for saved dark mode (matching about page key)
+      if (localStorage.getItem('inkwhisper_dark') === 'enabled') {
+        html.classList.add('dark');
+        updateDarkUI(true);
+      } else {
+        updateDarkUI(false);
+      }
+      
+      function toggleDark() {
+        if (html.classList.contains('dark')) {
+          html.classList.remove('dark');
+          localStorage.setItem('inkwhisper_dark', 'disabled');
+          updateDarkUI(false);
+        } else {
+          html.classList.add('dark');
+          localStorage.setItem('inkwhisper_dark', 'enabled');
+          updateDarkUI(true);
+        }
+      }
+      
+      if (darkToggle) darkToggle.addEventListener('click', toggleDark);
+      
+      // ========== RTL TOGGLE (same as about page) ==========
+      const rtlBtn = document.getElementById('rtlToggleBtn');
+      const rtlLabelSpan = document.getElementById('rtlLabel');
+      const rtlIconSpan = document.getElementById('rtlIcon');
+      
+      function setDirection(dir) {
+        html.setAttribute('dir', dir);
+        localStorage.setItem('inkwhisper_dir', dir);
+        const label = dir === 'rtl' ? 'RTL' : 'LTR';
+        if (rtlLabelSpan) rtlLabelSpan.innerText = label;
+        if (rtlIconSpan) {
+          if (dir === 'rtl') {
+            rtlIconSpan.classList.add('rtl-flip');
+          } else {
+            rtlIconSpan.classList.remove('rtl-flip');
+          }
+        }
+        // Also flip arrow icons in buttons for better RTL experience
+        const arrows = document.querySelectorAll('.fa-arrow-right, .fa-chevron-right');
+        arrows.forEach(arrow => {
+          if (dir === 'rtl') arrow.classList.add('rtl-flip');
+          else arrow.classList.remove('rtl-flip');
+        });
+      }
+      
+      const savedDir = localStorage.getItem('inkwhisper_dir');
+      setDirection(savedDir === 'rtl' ? 'rtl' : 'ltr');
+      
+      function toggleRTL() {
+        const currentDir = html.getAttribute('dir');
+        setDirection(currentDir === 'rtl' ? 'ltr' : 'rtl');
+      }
+      
+      if (rtlBtn) rtlBtn.addEventListener('click', toggleRTL);
+      
+      // ========== FORM SUBMIT PREVENTION (just for demo, can be replaced with real logic) ==========
+      const loginForm = document.getElementById('loginForm');
+      if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          // Gentle feedback - matches brand style
+          const btn = loginForm.querySelector('button[type="submit"]');
+          const originalText = btn.innerHTML;
+          btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+          btn.disabled = true;
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            // In a real scenario you would redirect or show error
+            alert('✨ Welcome back to InkWhisper! (Demo authentication)');
+          }, 1000);
+        });
+      }
+      
+      // ========== RESPONSIVE: close any open drawers? not needed, but ensure RTL works on all elements ==========
+      // Handle any dynamic text alignment for RTL on social buttons
+      function applyRTLAlignment() {
+        const isRTL = html.getAttribute('dir') === 'rtl';
+        const socialButtons = document.querySelectorAll('.social-btn');
+        socialButtons.forEach(btn => {
+          if (isRTL) {
+            btn.style.flexDirection = 'row-reverse';
+          } else {
+            btn.style.flexDirection = 'row';
+          }
+        });
+      }
+      
+      // Observe direction changes
+      const observer = new MutationObserver(() => {
+        applyRTLAlignment();
+      });
+      observer.observe(html, { attributes: true, attributeFilter: ['dir'] });
+      applyRTLAlignment();
+      
+      // Add responsiveness for extremely small screens (extra class for xs breakpoint)
+      // Ensure that hidden xs class works properly - we don't have xs in tailwind by default but we add a manual style
+      const style = document.createElement('style');
+      style.textContent = `
+        @media (min-width: 480px) {
+          .xs\\:inline {
+            display: inline !important;
+          }
+        }
+        @media (max-width: 479px) {
+          .xs\\:inline {
+            display: none !important;
+          }
+          .social-btn {
+            padding: 0.65rem 0.25rem !important;
+          }
+          .social-btn i {
+            font-size: 1.1rem !important;
+          }
+        }
+        .xs\\:inline {
+          display: none;
+        }
+        @media (min-width: 480px) {
+          .xs\\:inline {
+            display: inline;
+          }
+        }
+        /* Ensure inputs have proper spacing on mobile */
+        @media (max-width: 640px) {
+          .login-card {
+            margin: 0 0.5rem;
+          }
+          .input-field {
+            font-size: 0.9rem;
+            padding: 0.6rem 1rem;
+          }
+          .top-right-controls {
+            gap: 0.5rem;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+      
+      // Additional touch-friendly improvements
+      const allButtons = document.querySelectorAll('button, a');
+      allButtons.forEach(btn => {
+        if (btn.classList && !btn.classList.contains('no-tap')) {
+          btn.style.touchAction = 'manipulation';
+        }
+      });
+      
+      // Make sure the logo font and style exactly match about page:
+      // The about page uses Inter for nav, but the logo uses Inter bold. We already set it.
+      // The login page logo now matches "InkWhisper" with "botanical essence" subtext exactly like about page.
+      // The dark mode forces all text to white - all good.
+      
+      // Preload any icon flip for existing arrows
+      if (html.getAttribute('dir') === 'rtl') {
+        const arrows = document.querySelectorAll('.fa-arrow-right, .fa-chevron-right');
+        arrows.forEach(arrow => arrow.classList.add('rtl-flip'));
+      }
+      
+      // Optional: smooth placeholder color in dark mode
+      const inputs = document.querySelectorAll('input');
+      inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.parentElement?.classList.add('focused');
+        });
+        input.addEventListener('blur', function() {
+          this.parentElement?.classList.remove('focused');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
