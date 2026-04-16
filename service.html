@@ -324,6 +324,18 @@
                 transform: translateY(0px);
             }
         }
+        html.dark .flex span {
+    color: #ffffff !important;
+}
+/* CTA Button Dark Mode Fix */
+html.dark .cta-button-text {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+html.dark .cta-button-text:hover {
+    background-color: #222222 !important;
+}
     </style>
 </head>
 
@@ -674,8 +686,9 @@
                 <p class="text-[#E8DCCC] text-base max-w-xl mx-auto mb-6">Book a free 15-minute consultation with our
                     herbalist to discover which service aligns with your intentions.</p>
                 <div class="flex flex-col sm:flex-row gap-3 justify-center"><a href="#"
-                        class="bg-[#FFD89C] hover:bg-[#FFE0B5] text-[#4A2E1F] font-bold py-2.5 px-6 rounded-full transition shadow-md text-sm">Book
-                        a consultation →</a><a href="#"
+   class="bg-[#FFD89C] hover:bg-[#FFE0B5] text-[#4A2E1F] font-bold py-2.5 px-6 rounded-full transition shadow-md text-sm cta-button-text">
+   Book a consultation →
+</a><a href="#"
                         class="border border-[#FFD89C] text-[#FFE8D4] hover:bg-[#6B422A] font-semibold py-2.5 px-6 rounded-full transition text-sm">View
                         upcoming workshops</a></div>
             </div>

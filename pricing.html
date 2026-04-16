@@ -414,6 +414,17 @@
                 /* 🔥 prevents icon shrinking */
             }
         }
+        /* Fix: Keep "Contact our herbalist" button BLACK in dark mode */
+html.dark .bg-\[\#4A2E1F\] a.border {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+    border-color: #000000 !important;
+}
+
+html.dark .bg-\[\#4A2E1F\] a.border:hover {
+    background-color: #222222 !important;
+    color: #FFFFFF !important;
+}
     </style>
 </head>
 
